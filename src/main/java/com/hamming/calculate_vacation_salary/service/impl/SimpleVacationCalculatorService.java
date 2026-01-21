@@ -12,16 +12,22 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class SimpleVacationCalculatorService implements CalculateVacationSalaryService {
-
-    @Value("${avg.days-in-month}")
-    private static String AVG_DAYS_VALUE;
-    private static final BigDecimal AVG_DAYS_IN_MONTH = new BigDecimal(AVG_DAYS_VALUE);
+    private static final BigDecimal AVG_DAYS_IN_MONTH = new BigDecimal("29.3");
 
     @Override
     public BigDecimal calculate(BigDecimal averageSalary, Integer vacationDays, LocalDate startDate) {
+        log.info("Начало расчета отпускных (простой метод). Параметры: средняя зарплата = {}, " +
+                "дни отпуска = {}, дата начала = {}", averageSalary, vacationDays, startDate);
+
         BigDecimal dailyAverage = averageSalary.divide(AVG_DAYS_IN_MONTH, 2, RoundingMode.HALF_UP);
-        return dailyAverage.multiply(new BigDecimal(vacationDays));
+        log.debug("Среднедневной заработок: {}", dailyAverage);
+
+        BigDecimal result = dailyAverage.multiply(new BigDecimal(vacationDays));
+
+        log.info("Расчет отпускных завершен. Результат: {} ({} дней × {} средний дневной заработок)",
+                result, vacationDays, dailyAverage);
+
+        return result;
     }
 }

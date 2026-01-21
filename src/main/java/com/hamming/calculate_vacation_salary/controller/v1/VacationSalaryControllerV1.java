@@ -26,7 +26,6 @@ public class VacationSalaryControllerV1 {
         var vacationSalary = vacationSalaryCalculator.calculate(request.averageSalary(),
                 request.vacationDays(),
                 request.startVacation());
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new VacationCalculateResponse(vacationSalary));
     }

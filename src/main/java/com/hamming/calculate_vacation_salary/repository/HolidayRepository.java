@@ -21,10 +21,4 @@ public interface HolidayRepository extends JpaRepository<Holiday, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
-
-    @Query("SELECT h FROM Holiday h WHERE h.year = :year")
-    List<Holiday> findByYear(@Param("year") Integer year);
-
-    @Query("SELECT h FROM Holiday h WHERE h.date IN :dates")
-    List<Holiday> findAllByDates(@Param("dates") List<LocalDate> dates);
 }

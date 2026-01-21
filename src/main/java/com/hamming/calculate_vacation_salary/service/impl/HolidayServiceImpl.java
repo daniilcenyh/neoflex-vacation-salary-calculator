@@ -49,6 +49,4 @@ public class HolidayServiceImpl implements HolidayService {
                 startDate, calendarDays, paidDays);
         return paidDays;
     }
-
-
 }

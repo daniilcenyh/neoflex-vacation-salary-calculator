@@ -27,12 +27,15 @@ public class Holiday {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "is_transferable")
-    private Boolean isTransferable;
+    @Column(name = "is_day_off")
+    private Boolean isDayOff;
 
     @Column(name = "year", nullable = false)
     private Integer year;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt = LocalDateTime.now();
 }

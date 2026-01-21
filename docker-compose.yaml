@@ -1,9 +1,7 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:${POSTGRES_VERSION:-15-alpine}
-    container_name: ${APP_NAME:-calculate-vacation-salary}-postgres
+    container_name: vacation-salary-postgres
     environment:
       POSTGRES_DB: ${DB_NAME:-vacation_salary_db}
       POSTGRES_USER: ${DB_USERNAME:-vacation_user}
@@ -12,39 +10,11 @@ services:
       - "${DB_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - vacation-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-vacation_user} -d ${DB_NAME:-vacation_salary_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: ${APP_NAME:-calculate-vacation-salary}
-    environment:
-      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: ${DB_NAME:-vacation_salary_db}
-      DB_USERNAME: ${DB_USERNAME:-vacation_user}
-      DB_PASSWORD: ${DB_PASSWORD:-vacation_password}
-      APP_PORT: ${APP_PORT:-8080}
-    ports:
-      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
-    depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - vacation-network
-    restart: unless-stopped
-
 volumes:
   postgres_data:
-
-networks:
-  vacation-network:
-    driver: bridge
